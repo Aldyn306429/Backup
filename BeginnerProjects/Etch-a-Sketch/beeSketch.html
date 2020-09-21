@@ -1,0 +1,433 @@
+<DOCTYPE!>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Etch-A-Sketch</title>
+            <style> 
+                .title {
+                    height: 4%;
+                    width: 99%;
+                    background-color: black;
+                    padding: 10px;
+                    color: yellow;
+                    position: absolute;
+                    top: 0%;
+                    left: 0%;
+                    display: flex; 
+                    justify-content: center; 
+                    align-items: center; 
+                    font-family: 'Times New Roman', Times, Serif; 
+                    font-size: 50px;
+                    font-weight: bold;  
+                }
+            /* Code for the gridboxes and how it turns black when hovered over*/
+                body {
+                    background-image: url('https://wallpapercave.com/wp/wp3287957.jpg'); 
+                }
+
+                .container {
+                    width: 100%;
+                    height: 100%;
+                    display: flex; 
+                    justify-content: center;
+                    align-content: center;
+                }
+
+                :root {
+                    --grid-cols: 1;
+                    --grid-rows: 1;
+                }
+
+                .gridContainer {
+                    padding: 10px;
+                    border: 1px solid; 
+                    width: 40%;
+                    height: 80%; 
+                    display: grid;
+                    grid-gap: 5px; 
+                    grid-template-rows: repeat(var(--grid-rows), 1fr);
+                    grid-template-columns: repeat(var(--grid-cols), 1fr);
+                    position: absolute;
+                    top: 8%; 
+                    background-color: black; 
+                }
+
+                .gridBox {
+                    padding: 5px;
+                    border-width: 1px;
+                    border-style: solid;
+                    margin: -3px; 
+                    background-color: white;
+                }
+
+            /* */
+
+            /* Code for the manual at the bottom of the grid container*/
+                .manualContainer {
+                    width: 50%;
+                    height: 5%;
+                    position: absolute;
+                    bottom: 1%;
+                    border: 1px solid;
+                    padding: 10px;
+                    left: 25%;
+                    display: flex;
+                    justify-content: space-between; 
+                    align-items: center;
+                    background-color: honeydew;
+                }
+
+                .setGrid {
+                    width: 50px;
+                    height: 50px;
+                    position: relative;
+                    border-radius: 50%;
+                    background-image: url('https://cdn3.iconfinder.com/data/icons/common-4/24/ui-01-512.png');
+                    background-size: cover; 
+                }
+
+                .reset {
+                    width: 50px;
+                    height: 50px;
+                    position: relative;
+                    background-image: url('https://cdn0.iconfinder.com/data/icons/media-player/100/player-08-512.png');
+                    background-size: cover;
+                    border-radius: 50%; 
+                }
+
+                .removeGrid {
+                    width: 50px;
+                    height: 50px;
+                    position: relative;
+                    border-radius: 50%; 
+                    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQtjWV9hEbiA0JZ0AkEj5UD5URopY6B8PCB4A&usqp=CAU'); 
+                    background-size: cover; 
+                }
+
+                .setBackgroundColor {
+                    width: 50px;
+                    height: 50px;
+                    position: relative;
+                    border-radius: 50%;
+                    background-image: url('https://static.thenounproject.com/png/104779-200.png');
+                    background-size: cover; 
+                }
+                .clickOrHover {
+                    width: 50px;
+                    height: 50px;
+                    position: relative;
+                    border-radius: 50%; 
+                    background-image: url('https://cdn2.iconfinder.com/data/icons/art-2-1/100/1-10-512.png');
+                    background-size: cover;
+                }
+
+                .addColor {
+                    width: 50px;
+                    height: 50px;
+                    position: relative;
+                    border-radius: 50%; 
+                    background-image: url('https://static.thenounproject.com/png/839730-200.png');
+                    background-size: cover;
+                }
+
+                button:hover {
+                    transform: scale(1.1,1.1);
+                }
+            /* */ 
+
+            /* For selecting colors for user brush*/
+                .paletteContainer {
+                    width: 15%;
+                    height: 80%;
+                    position: absolute;
+                    right: 10%; 
+                    border: 1px solid;
+                    padding: 10px;
+                    top: 8%;
+                    background-color: wheat;
+                    border-radius: 5%;
+                }
+
+                .playerContainer {
+                    width: 100%;
+                    height: 15%; 
+                    border-width: 1px;
+                    border-style: hidden hidden solid hidden;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: absolute;
+                    top: 0%;
+                    left: 0%;
+                }
+
+                #colorCell {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: 1px solid; 
+                    position: absolute;
+                }
+
+                .light:hover {
+                    opacity: 0.5; 
+                }
+
+                .spanTitle {
+                    position: relative;
+                    font-size: 15px;
+                    bottom: 45%;
+                    overflow: hidden;
+                    width: 400%;
+                    display: inline-block;
+                    right: 40%;
+                }
+
+                .spanText {
+                    position: relative;
+                    font-size: 10px;
+                    bottom: 35%;
+                    right: 60%;
+                }
+
+                .black {
+                    left: 15%;
+                    top: 20%; 
+                    background-color: black;
+                }
+
+                .white {
+                    right: 15%;
+                    top: 30%; 
+                    background-color: white;
+                }
+
+                .lightBlue {
+                    left: 15%;
+                    top: 40%; 
+                    background-color: lightblue;
+                }
+
+                .lightCoral {
+                    right: 15%;
+                    top: 50%;
+                    background-color: lightcoral;
+                }
+
+                .lightGreen {
+                    left: 15%;
+                    top: 60%; 
+                    background-color: lightgreen;
+                }
+
+                .lightGoldenRodYellow {
+                    right: 15%;
+                    top: 70%; 
+                    background-color: lightgoldenrodyellow;
+                }
+
+                .lightPink {
+                    left: 15%;
+                    top: 80%; 
+                    background-color: lightpink;
+                }
+
+                .lightSalmon {
+                    right: 15%;
+                    top: 90%; 
+                    background-color: lightsalmon;
+                }
+
+            /* */ 
+            </style>
+        </head>
+        <body>
+            <div class="title">BeeSketch</div>
+            <div class="manualContainer">
+                <button class="clickOrHover"></button>
+                <button class="setGrid"></button>
+                <button class="removeGrid"></button> 
+                <button class="reset"></button> 
+                <button class="setBackgroundColor"></button>
+                <button class="addColor"></button>
+            </div>
+            <div class="container">
+                <div class="gridContainer"></div>
+                <div class="paletteContainer">
+                    <div class="playerContainer">
+                        <div id="colorCell" class="playerColor">
+                            <span class="spanTitle">Artist Color</span>
+                        </div>
+                    </div>
+                    <div id="colorCell" class="black light">
+                        <span style="bottom: 15%" class="spanText">Black</span>
+                    </div>
+                    <div id="colorCell" class="white light">
+                        <span style="bottom: 15%" class="spanText">White</span>
+                    </div>
+                    <div id="colorCell" class="lightBlue light">
+                        <span class="spanText">Light Blue</span>
+                    </div>
+                    <div id="colorCell" class="lightCoral light">
+                        <span class="spanText">Light Coral</span>
+                    </div>
+                    <div id="colorCell" class="lightGreen light">
+                        <span class="spanText">Light Green</span>
+                    </div>
+                    <div id="colorCell" class="lightGoldenRodYellow light">
+                        <span style="bottom: 65%" class="spanText">Light GoldenRod Yellow</span>
+                    </div>
+                    <div id="colorCell" class="lightPink light">
+                        <span class="spanText">Light Pink</span>
+                    </div>
+                    <div id="colorCell" class="lightSalmon light">
+                        <span style="bottom: 45%" class="spanText">Light Salmon</span>
+                    </div>
+                </div>
+            </div>
+            <script>
+                const container = document.querySelector('.gridContainer');
+                const paletteContainer = document.querySelector('.paletteContainer');
+
+                function makeGrid(rows, cols) {
+                    container.style.setProperty('--grid-cols', cols); 
+                    container.style.setProperty('--grid-rows', rows); 
+                    for(let i = 0; i < (rows * cols); i++) {
+                        let cell = document.createElement('div');
+                        container.appendChild(cell).className = 'gridBox'; 
+                    };
+                };
+
+                makeGrid(16,16);
+
+                let color = 'black'; 
+                let playerColor = document.querySelector('.playerColor');
+                playerColor.style.setProperty('background-color', color);
+
+                let black = document.querySelector('.black');
+                    black.addEventListener('click', () => {
+                        color = 'black'; 
+                        playerColor.style.setProperty('background-color', color);
+                    }); 
+                let white = document.querySelector('.white');
+                    white.addEventListener('click', () => {
+                        color = 'white'; 
+                        playerColor.style.setProperty('background-color', color);
+                    }); 
+                let lightBlue = document.querySelector('.lightBlue');
+                    lightBlue.addEventListener('click', () => {
+                        color = 'lightBlue'; 
+                        playerColor.style.setProperty('background-color', color);
+                    }); 
+                let lightCoral = document.querySelector('.lightCoral');
+                    lightCoral.addEventListener('click', () => {
+                        color = 'lightCoral'; 
+                        playerColor.style.setProperty('background-color', color);
+                    }); 
+                let lightGreen = document.querySelector('.lightGreen');
+                    lightGreen.addEventListener('click', () => {
+                        color = 'lightGreen'; 
+                        playerColor.style.setProperty('background-color', color);
+                    }); 
+                let lightGoldenRodYellow = document.querySelector('.lightGoldenRodYellow');
+                    lightGoldenRodYellow.addEventListener('click', () => {
+                        color = 'lightGoldenRodYellow'; 
+                        playerColor.style.setProperty('background-color', color);
+                    }); 
+                let lightSalmon = document.querySelector('.lightSalmon');
+                    lightSalmon.addEventListener('click', () => {
+                        color = 'lightSalmon'; 
+                        playerColor.style.setProperty('background-color', color);
+                    }); 
+                let lightPink = document.querySelector('.lightPink');
+                    lightPink.addEventListener('click', () => {
+                        color = 'lightPink'; 
+                        playerColor.style.setProperty('background-color', color);
+                    }); 
+
+                let addColor = document.querySelector('.addColor');
+                    addColor.addEventListener('click', () => {
+                        let whatColor = prompt('Add what color?', '...'); 
+                        color = whatColor; 
+                        playerColor.style.setProperty('background-color', color);
+                    });
+
+                let gridBox = document.querySelectorAll('.gridBox');
+                gridBox.forEach((box) => {
+                    box.addEventListener('mousedown', () => {
+                        box.style.setProperty('background-color', color);
+                    })
+                }); 
+
+                let clickOrHover = document.querySelector('.clickOrHover');
+                clickOrHover.addEventListener('click', () => {
+                    gridBox.forEach((box) => {
+                        function idk() {
+                            box.style.setProperty('background-color', color);
+                        }
+                        box.addEventListener('mouseenter', idk); 
+                        container.addEventListener('dblclick', () => {
+                            box.removeEventListener('mouseenter', idk);
+                        });
+                    }); 
+                });
+
+                let reset = document.querySelector('.reset'); 
+                reset.addEventListener('click', () => {
+                    let count = document.getElementsByClassName("gridBox").length; 
+                    for(let i = 0; i < (count * count); i++) {
+                        document.getElementsByClassName("gridBox")[i].style.backgroundColor = 'white'; 
+                    } 
+                });
+
+                let setGrid = document.querySelector('.setGrid');
+                setGrid.addEventListener('click', () => {
+                    container.innerHTML = ''; 
+                    let number = prompt("How many rows and columns do you want? (Min = 1, Max = 62)"); 
+                    makeGrid(number, number);
+                    let gridBox = document.querySelectorAll('.gridBox'); 
+                     gridBox.forEach((box) => {
+                        box.addEventListener('mousedown', () => {
+                            box.style.setProperty('background-color', color);
+                        })
+                    }); 
+                    let clickOrHover = document.querySelector('.clickOrHover');
+                    clickOrHover.addEventListener('click', () => {
+                        gridBox.forEach((box) => {
+                            function idk() {
+                                box.style.setProperty('background-color', color);
+                            }
+                            box.addEventListener('mouseenter', idk); 
+                            container.addEventListener('dblclick', () => {
+                                box.removeEventListener('mouseenter', idk);
+                            });
+                        }); 
+                    });
+                });  
+
+                let removeGrid = document.querySelector('.removeGrid');    
+                removeGrid.addEventListener('click', () => {
+                    if(document.getElementsByClassName("gridBox")[0].style.borderStyle == 'solid') {
+                        let count = document.getElementsByClassName("gridBox").length; 
+                        for(let i = 0; i < (count * count); i++) {
+                            document.getElementsByClassName("gridBox")[i].style.borderStyle = 'hidden'; 
+                        } 
+                    } else {
+                        let count = document.getElementsByClassName("gridBox").length; 
+                        for(let i = 0; i < (count * count); i++) {
+                            document.getElementsByClassName("gridBox")[i].style.borderStyle = 'solid'; 
+                        }
+                    }
+                });         
+
+                let setBackgroundColor = document.querySelector('.setBackgroundColor');
+                setBackgroundColor.addEventListener('click', () => {
+                    let askWhatColor = prompt("Set background color to?", "White");
+                    let count = document.getElementsByClassName("gridBox").length; 
+                    for(let i = 0; i < (count * count); i++) {
+                        document.getElementsByClassName("gridBox")[i].style.backgroundColor = askWhatColor; 
+                    } 
+                }); 
+            </script>
+        </body>
+    </html>

@@ -1,0 +1,553 @@
+<DOCTYPE!>
+<html>
+    <head>
+        <title>Calculator by Aldyn Chen</title>
+        <meta charset="UTF-8">
+        <style>
+
+            /* Work on long value control for decimals */
+            
+            .body {
+                width: 100%;
+                height: 100%;
+                font-family: 'Times New Roman', Times, serif;
+            }
+            .calculatorContainer {
+                background-color: #1c1c1c; 
+                width: 15%;
+                height: 55%;
+                position: absolute;
+                left: 42.5%; 
+                top: 10%;
+                border: 1px solid; 
+                border-radius: 25px;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: 2fr repeat(5, 1fr); 
+                grid-template-areas: 
+                "display display display display" 
+                "clear negativeOrPositive backspace divide" 
+                "one two three multiply"
+                "four five six subtract" 
+                "seven eight nine add" 
+                "zero zero decimal equal";
+                align-items: center;
+                justify-items: center;
+            }
+
+            .buttons {
+                border: 1px solid;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+            }
+
+            #mainColor {
+                color: white;
+                background-color: #505050;
+                border-color: #505050;
+            }
+
+            #operationColor {
+                color: white;
+                background-color: #FF9500;
+                border-color: #FF9500;
+            }
+
+            #specialOpColor {
+                color: black;
+                background-color: #D4D4D2;
+                border-color: #D4D4D2;
+            }
+
+            .display {
+                grid-area: display; 
+                color: white; 
+                border: 1px solid #1C1C1C;
+                border-radius: 25px 25px 0px 0px; 
+                width: 100%;
+                height: 100%;
+                position: absolute;
+            }
+
+            .operationText {
+                font-family: Arial, Helvetica, sans-serif; 
+                font-weight: bold;
+                font-size: 12px;
+                position: absolute;
+                right: 15px;
+                top: 60px; 
+            }
+
+            .mainText {
+                font-family: Arial, Helvetica, sans-serif; 
+                font-weight: bold;
+                font-size: 40px;
+                position: absolute;
+                right: 15px;
+                top: 50px; 
+            }
+
+            .clear {
+                grid-area: clear; 
+            }
+
+            .negativeOrPositive {
+                grid-area: negativeOrPositive;
+            }
+
+            .backspace {
+                grid-area: backspace;
+            }
+
+            .divide {
+                grid-area: divide;
+            }
+
+            .multiply {
+                grid-area: multiply; 
+            }
+
+            .subtract {
+                grid-area: subtract; 
+            }
+
+            .add {
+                grid-area: add;
+            }
+
+            .equal {
+                grid-area: equal;
+            }
+
+            .decimal {
+                grid-area: decimal; 
+            }
+
+            .one {
+                grid-area: one; 
+            }
+
+            .two {
+                grid-area: two; 
+            }
+
+            .three {
+                grid-area: three; 
+            }
+
+            .four {
+                grid-area: four; 
+            }
+
+            .five {
+                grid-area: five; 
+            }
+
+            .six {
+                grid-area: six;
+            }
+
+            .seven {
+                grid-area: seven; 
+            }
+
+            .eight {
+                grid-area: eight;
+            }
+
+            .nine {
+                grid-area: nine; 
+            }
+
+            .zero {
+                font-weight: bold;
+                grid-area: zero; 
+                width: 125px;
+                height: 50px;
+                border-radius: 25px;
+                border: 1px solid; 
+                display: flex;
+                align-items: center;
+            }
+
+            .zeroText {
+                position: absolute;
+                left: 32px; 
+            }
+
+            button:hover {
+                opacity: 0.9; 
+            }
+        </style>
+    </head>
+    <body>
+        <div class="calculatorContainer">
+            <div class="display">
+                <p class="operationText"></p>
+                <p class="mainText"></p>
+            </div>
+            <button class="negativeOrPositive buttons" id="specialOpColor">+/-</button>
+            <button class="backspace buttons" id="specialOpColor">⌫</button>
+            <button class="divide buttons" id="operationColor">÷</button>
+            <button class="multiply buttons" id="operationColor">×</button>
+            <button class="add buttons" id="operationColor">+</button>
+            <button class="subtract buttons" id="operationColor">-</button>
+            <button class="clear buttons" id="specialOpColor">c</button>
+            <button class="one buttons" id="mainColor">1</button>
+            <button class="two buttons" id="mainColor">2</button>
+            <button class="three buttons" id="mainColor">3</button>
+            <button class="four buttons" id="mainColor">4</button>
+            <button class="five buttons" id="mainColor">5</button>
+            <button class="six buttons" id="mainColor">6</button>
+            <button class="seven buttons" id="mainColor">7</button>
+            <button class="eight buttons" id="mainColor">8</button>
+            <button class="nine buttons" id="mainColor">9</button>
+            <button class="zero" id="mainColor">
+                <p class="zeroText">0</p>
+            </button>
+            <button class="decimal buttons" id="mainColor">.</button>
+            <button class="equal buttons" id="operationColor">=</button>
+        </div>
+        <script>
+            let answer = ''; 
+            let oText = '';
+            let mText = ''; 
+            let operationText = document.querySelector('.operationText');
+            let mainText = document.querySelector('.mainText');
+            operationText.textContent = oText;
+            mainText.textContent = mText;
+
+            function add(a, b) {
+                return parseFloat(a + b); 
+            };
+
+            function multiply(a, b) {
+                return parseFloat(a * b);
+            };
+
+            function divide(a, b) {
+                return parseFloat(a / b);
+            };
+
+            function subtract(a, b) {
+                return parseFloat(a - b);
+            };
+
+            function operate() {
+                let a, b; 
+                let operationOfChoice = 0; 
+                mText = mText.split('');
+                for(let i = 0; i < mText.length; i++) {
+                    if(mText[i] == '+' && mText[i-1] != 'e') {
+                        a = parseFloat(mText.slice(0, i).join(''));
+                        b = parseFloat(mText.slice(i+1, mText.length).join('')); 
+                        operationOfChoice = 1; 
+                    } else if(i != 0 && mText[i] == '-' && mText[i-1] != 'e') {
+                        a = parseFloat(mText.slice(0, i).join(''));
+                        b = parseFloat(mText.slice(i+1, mText.length).join('')); 
+                        operationOfChoice = 2; 
+                    } else if(mText[i] == '×' && mText[i-1] != 'e') {
+                        a = parseFloat(mText.slice(0, i).join(''));
+                        b = parseFloat(mText.slice(i+1, mText.length).join('')); 
+                        operationOfChoice = 3; 
+                    } else if(mText[i] == '÷' && mText[i-1] != 'e') {
+                        a = parseFloat(mText.slice(0, i).join(''));
+                        b = parseFloat(mText.slice(i+1, mText.length).join('')); 
+                        operationOfChoice = 4; 
+                    }
+                }
+                mText = mText.join(''); 
+                if(operationOfChoice == 1) {
+                    oText = mText; 
+                    answer = add(a, b);
+                    if(answer > 99999999999) {
+                        answer = answer.toExponential(0); 
+                    }
+                    answer = +answer.toFixed(5); 
+                    mText = answer.toString(); 
+                    operationText.textContent = oText + '=' + answer;
+                    mainText.textContent = mText;
+                } else if(operationOfChoice == 2) {
+                    oText = mText; 
+                    answer = subtract(a, b);
+                    if(answer > 99999999999) {
+                        answer = answer.toExponential(0); 
+                    }
+                    answer = +answer.toFixed(5); 
+                    mText = answer.toString(); 
+                    operationText.textContent = oText + '=' + answer;
+                    mainText.textContent = mText;
+                } else if(operationOfChoice == 3) {
+                    oText = mText; 
+                    answer = multiply(a, b);
+                    if(answer > 99999999999) {
+                        answer = answer.toExponential(0); 
+                    }
+                    answer = +answer.toFixed(5); 
+                    mText = answer.toString(); 
+                    operationText.textContent = oText + '=' + answer;
+                    mainText.textContent = mText;
+                } else if(operationOfChoice == 4) {
+                    oText = mText; 
+                    answer = divide(a, b);
+                    if(answer > 99999999999) {
+                        answer = answer.toExponential(0); 
+                    }
+                    mText = answer.toString(); 
+                    if(answer == 'Infinity') {
+                        mText = 'Undefined';
+                    }
+                    answer = +answer.toFixed(5); 
+                    operationText.textContent = oText + '=' + answer;
+                    mainText.textContent = mText;
+                } else {
+                    answer = +answer.toFixed(5); 
+                    answer = mText; 
+                    oText = mText; 
+                    operationText.textContent = oText;
+                    mainText.textContent = mText;
+                }
+
+                return answer; 
+            };
+            
+            let toMultiply = document.querySelector('.multiply');
+            toMultiply.addEventListener('click', () => {
+                let limit = 0; 
+                mText = mText.split(''); 
+                for(let i = 0; i < mText.length; i++) {
+                    if(mText[i] == '+' || mText[i] == '-' || mText[i] == '×' || mText[i] == '÷' && mText[i-1] != 'e') {
+                        limit++; 
+                    }
+                }
+                mText = mText.join(''); 
+                if(limit < 1) {
+                    mText += '×'; 
+                    mainText.textContent = mText; 
+                } else {
+                    mText = operate(); 
+                    mText += '×'; 
+                    mainText.textContent = mText; 
+                }
+            });
+
+            let toDivide = document.querySelector('.divide');
+            toDivide.addEventListener('click', () => {
+                let limit = 0; 
+                mText = mText.split(''); 
+                for(let i = 0; i < mText.length; i++) {
+                    if(mText[i] == '+' || mText[i] == '-' || mText[i] == '×' || mText[i] == '÷' && mText[i-1] != 'e') {
+                        limit++; 
+                    }
+                }
+                mText = mText.join(''); 
+                if(limit < 1) {
+                    mText += '÷';
+                    mainText.textContent = mText; 
+                } else {
+                    mText = operate(); 
+                    mText += '÷';
+                    mainText.textContent = mText; 
+                }
+            });
+
+            let toAdd = document.querySelector('.add');
+            toAdd.addEventListener('click', () => {
+                let limit = 0; 
+                mText = mText.split(''); 
+                for(let i = 0; i < mText.length; i++) {
+                    if(mText[i] == '+' || mText[i] == '-' || mText[i] == '×' || mText[i] == '÷' && mText[i-1] != 'e') {
+                        limit++; 
+                    }
+                }
+                mText = mText.join(''); 
+                if(limit < 1) {
+                    mText += '+';
+                    mainText.textContent = mText; 
+                } else {
+                    mText = operate(); 
+                    mText += '+';
+                    mainText.textContent = mText; 
+                }
+            });
+
+            let toSubtract = document.querySelector('.subtract');
+            toSubtract.addEventListener('click', () => {
+                let limit = 0; 
+                mText = mText.split(''); 
+                for(let i = 0; i < mText.length; i++) {
+                    if(mText[i] == '+' || mText[i] == '-' || mText[i] == '×' || mText[i] == '÷' && mText[i-1] != 'e') {
+                        limit++; 
+                    }
+                }
+                mText = mText.join(''); 
+                if(limit < 1) {
+                    mText += '-';
+                    mainText.textContent = mText; 
+                } else {
+                    mText = operate(); 
+                    mText += '-';
+                    mainText.textContent = mText; 
+                }
+            });
+
+            let findSolution = document.querySelector('.equal');
+            findSolution.addEventListener('click', () => {
+                operate(); 
+            });
+
+            let one = document.querySelector('.one');
+            one.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '1'; 
+                } else mText += '1';
+                mainText.textContent = mText; 
+            });
+
+            let two = document.querySelector('.two');
+            two.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '2'; 
+                } else mText += '2';
+                mainText.textContent = mText; 
+            });
+
+            let three = document.querySelector('.three');
+            three.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '3'; 
+                } else mText += '3';
+                mainText.textContent = mText; 
+            });
+
+            let four = document.querySelector('.four');
+            four.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '4'; 
+                } else mText += '4';
+                mainText.textContent = mText; 
+            });
+
+            let five = document.querySelector('.five');
+            five.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '5'; 
+                } else mText += '5';
+                mainText.textContent = mText; 
+            });
+
+            let six = document.querySelector('.six');
+            six.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '6'; 
+                } else mText += '6';
+                mainText.textContent = mText; 
+            });
+
+            let seven = document.querySelector('.seven');
+            seven.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '7'; 
+                } else mText += '7';
+                mainText.textContent = mText; 
+            });
+
+            let eight = document.querySelector('.eight');
+            eight.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '8'; 
+                } else mText += '8';
+                mainText.textContent = mText; 
+            });
+
+            let nine = document.querySelector('.nine');
+            nine.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '9'; 
+                } else mText += '9';
+                mainText.textContent = mText; 
+            });
+
+            let zero = document.querySelector('.zero');
+            zero.addEventListener('click', () => {
+                if(mText == 'Undefined' || mText == 'NaN') {
+                    mText = '0'; 
+                } else mText += '0';
+                mainText.textContent = mText; 
+            });
+
+            let decimal = document.querySelector('.decimal');
+            decimal.addEventListener('click', () => {
+                let j;
+                let k = -1; 
+                let limit = 0; 
+                mText = mText.split(''); 
+                for(let i = 0; i < mText.length; i++) {
+                    if(mText[i] == '.') {
+                        limit++;
+                        j = i;  
+                    }
+                    if(mText[i] == '+' || mText[i] == '-' || mText[i] == '×' || mText[i] == '÷') {
+                        k = i; 
+                    }
+                }
+                mText = mText.join(''); 
+                if(limit < 1 && mText != "Undefined" && mText != "NaN") {
+                    mText += '.';
+                    mainText.textContent = mText; 
+                } else if(j < k) {
+                    mText += '.';
+                    mainText.textContent = mText;
+                } 
+                if(mText == "Undefined" || mText == "NaN") {
+                    mText = '.';
+                    mainText.textContent = mText;
+                }
+            });
+
+            let negOrPos = document.querySelector('.negativeOrPositive');
+            negOrPos.addEventListener('click', () => {
+                let k; 
+                mText = mText.split('');
+                for(let i = 0; i < mText.length; i++) {
+                    if(mText[i] == '+' || mText[i] == '-' || mText[i] == '×' || mText[i] == '÷') {
+                        mText = mText.join(''); 
+                        k = operate();
+                        mText = k; 
+                        break; 
+                    } 
+                    if(i == mText.length-1) {
+                        mText = mText.join('');
+                        break; 
+                    }
+                }
+                mText = +mText; 
+                mText *= -1; 
+                mText = mText.toString(); 
+                mainText.textContent = mText; 
+            });
+
+            let clear = document.querySelector('.clear');
+            clear.addEventListener('click', () => {
+                answer = ''; 
+                oText = '';
+                mText = ''; 
+                operationText.textContent = oText;
+                mainText.textContent = mText;
+            });
+
+            let backspace = document.querySelector('.backspace');
+            backspace.addEventListener('click', () => {
+                mText = mText.split('');
+                mText.splice(mText.length-1, 1); 
+                mText = mText.join(''); 
+                mainText.textContent = mText;
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,78 @@
+<DOCTYPE!>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+                <title>Rock, Paper, Scissors</title>
+            <style>
+
+            </style>
+        </head>
+        <body>
+            <script>
+                let playerScore = 0;
+                let computerScore = 0;
+                function computerPlay() {
+                    let option = Math.floor(Math.random() * (3-1) + 1);
+                    if(option == 1) {
+                        return "Rock";
+                    } else if(option == 2) {
+                        return "Paper";
+                    } else {
+                        return "Scissor";
+                    };
+                }
+                    let playerSelection;
+                    let computerSelection;
+                function playRound(playerSelection, computerSelection) {
+                    if(playerSelection == "Rock" && computerSelection == "Scissors") {
+                        playerScore++; 
+                        return "You win! Rock beats Scissors!";
+                    } else if(playerSelection == "Rock" && computerSelection == "Paper") {
+                        computerScore++;
+                        return "You lose. Paper beats Rock";
+                    } else if(playerSelection == "Rock" && computerSelection == "Rock") {
+                        return "It's a draw, you both picked Rock";
+                    }
+                    if(playerSelection == "Paper" && computerSelection == "Rock") {
+                        playerScore++; 
+                        return "You win! Paper beats Rock!";
+                    } else if(playerSelection == "Paper" && computerSelection == "Scissors") {
+                        computerScore++; 
+                        return "You lose. Scissors beats Paper";
+                    } else if(playerSelection == "Paper" && computerSelection == "Paper") {
+                        return "It's a draw, you both picked Paper";
+                    }if(playerSelection == "Scissors" && computerSelection == "Paper") {
+                        playerScore++; 
+                        return "You win! Scissors beats Paper!";
+                    } else if(playerSelection == "Scissors" && computerSelection == "Rock") {
+                        computerScore++; 
+                        return "You lose. Rock beats Scissors";
+                    } else if(playerSelection == "Scissors" && computerSelection == "Scissors") {
+                        return "It's a draw, you both picked Scissors";
+                    }
+                }
+                function game() {
+                        for(let i = 1; i <= 5; i++) {
+                            playerSelection = prompt("Rock, Paper, or Scissors for Round: " + i);
+                            computerSelection = computerPlay();
+                            console.log("Round: " + i)
+                            console.log("Player: " + playerSelection);
+                            console.log("Computer: " + computerSelection);
+                            console.log(playRound(playerSelection, computerSelection));
+                            console.log("You have " + playerScore + " point(s)");
+                            console.log("The computer has " + computerScore + " point(s)");
+                        }
+                }
+                game(); 
+                console.log("Final Score: " + playerScore + " to " + computerScore);
+                if(playerScore > computerScore) {
+                    console.log("You won the duel against the robot");
+                } else if(computerScore > playerScore) {
+                    console.log("You lost the duel against the robot");
+                } else {
+                    console.log("It was a draw! Better luck next time");
+                }
+            </script>
+        </body>
+    </html>
+    

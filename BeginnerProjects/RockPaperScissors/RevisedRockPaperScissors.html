@@ -1,0 +1,439 @@
+<DOCTYPE!>
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Rock, Paper, Scissors w/Javascript</title>
+      <style>
+      /* The CSS for the container that holds the display of who won, buttons, and the scoreboard*/
+
+        .container {
+          display: flex;
+          justify-content: center;
+          height: 100%; 
+          width: 70%; 
+          background: white;
+          margin: -10px;
+          border: 9px solid black;
+        }
+
+      /* */
+      
+      /* The CSS for the the display of what object the player and the computer chose*/ 
+
+        .Selection {
+          width: 69.3%;
+          position: absolute;
+          bottom: 0%;
+          left: 0%; 
+          border: 3px solid black; 
+          border-style: solid hidden hidden hidden;
+          height: 35%;
+          z-index: 1;
+        }
+
+        .PlayerSelection {
+          font-family: 'Times New Roman', Times, serif;
+          font-size: 40px;
+          color: honeydew; 
+          background-color: black;
+          position: absolute; 
+          left: 0%;
+          width: 50%;
+          display: flex;
+          justify-content: center;
+          border: 3px solid white;
+          border-style: hidden solid hidden hidden;
+          padding: 10px 0px 10px 0px; 
+        }
+
+        .ComputerSelecion {
+          font-family: 'Times New Roman', Times, serif;
+          font-size: 40px;
+          color: honeydew; 
+          background-color: black;
+          position: absolute; 
+          right: 0%;
+          width: 50%;
+          display: flex;
+          justify-content: center;
+          border: 3px solid white; 
+          border-style: hidden hidden hidden solid;
+          padding: 10px 0px 10px 0px; 
+        }
+
+        .BattleAgainstIcon {
+          background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAhFBMVEX///8AAAC1tbX09PS9vb3l5eX39/f8/Pzd3d2RkZHn5+fv7+/x8fGOjo45OTni4uIhISEaGhqgoKBra2sRERGDg4NfX1/W1tbGxsZ4eHhbW1spKSlUVFSHh4cWFhYyMjKqqqo/Pz+ioqJLS0slJSVxcXHQ0NCurq5NTU01NTVlZWVERERyM4CzAAAJsUlEQVR4nO2daVviShCFiQhBUEDFEWVGYVzG5f//vwshhM7SnTonveBz+/06Q9KVXmrpqrLXi0QikUgkEolEIpFIJBKJRMIxWqahh4Bzfw7852WSXD/8ve87G41dhuOzq02S/AF+kiZ7Xh7Wo4mzgdkgnS2vvp72o0XmsDdPCp6+H87uXQ2wE5PlzePzcaDJGPnxQ1JhenUGPcAx6fv69qk6RugJ6+qvMx6vzsdDR2MWczlb320aRwc9ZtQo4Y7Vr6vlzNHg20hH53e/a1N34AJ6Vl8r4V7Mx5ul54N2srz4mBsHBR00vd5vs4gZt2duhKkxufkSDOcSe+id4JFJ8teNRBWGK8lYnsET4kwkIboyOB5FQ7kFn6o/asp40JQ1zdUMdtBsV8arUMSBE6kUboQDeUcf/CF88NzxmXouHAdm0ey4kj5540KuAuluSabwo5fSRydfDgQ7MHE4ioH42cmdA9H2DKfiQazxp8slhI8xMb/kY4APGplVc8CRcSPUExnEgfcXeDzzBduR6okdc+L58qNmx8i6fHI9seOBeMEQknAB2r3t3EPvXzOvENm7Bc+Wo3NyPZFBWY/IPt/y26qA6XP7G1Wol0BHzZY3mxLK/ImCb+ol2EbYcmVPQJl7eoQzOsCdkJDbvQlET2T8494jdS+OLO0ICOmJDDI2Bh41O6w4xPD2SJ5IXSWMZJSwEDaeXMNvZc9x/FturafOEWNUT+xgvZsh/jGT5KWr5kcs/gN0QOybeFlXhxjVExm0VfyHeVs3hxjWEzvm9LrBT+2MDnFi7o0f9PuASEYJ2iEWx53KdIgxkBKyDvEl+boOkXfmXMugbIwhoScyOlzEX7ASLpg4MRB3KsML2Htn35ls8OONMBL3dHLbeBGxO+ceqSd2dAzXjs33rgbA2BCpmSzcYfY37KuhM5yxgTMs3GCmt+zLAbcU97Zz7NxfcsZbgjjEpJ5Y2UrYog8B6Rcm9cSHveQe+hiQfWPKn+Di3FrYg2AlUYvNCVitWAzt7ZhI7/UrfLSLiF2QFJDhNT190kZtNTjI5WEprKfCao0Wk2NCmRQLB3ddPVpr3JiemcrvsRWm1m+6cv5xIprMDmrt/3IkX48+FPQOMaUnrGqJKmSYQRcnpvSEcdV355LaNxqHmDIknCcLDsGbvT3fTWqRWRALJzkRFd4YERvixJcL/DEr54mCGVT0pnY8MHpi4yuPnrmUqjnEhD+BJsl2gNIa5TgxoSecJZc1MdPWBBhQDwnC5bRuapuhtIZiTOKKwoGpbSZl/HLFIQYnce7G1DZD7KSpchZCdvyzK1PbDLGX1At3SZXI4WehCj4JraEe+C/SH7lLQm6F8M+V6IqsFsa5qW1mgIdv1sdfj0V2m2ctUaWPZzMozoFkDfgwtc3g4RslTtxqHF2fQuUqHr5RRt3iA7+E0RJV0ETUZKWoRaOjcnsqbQFgQ1x1iA1Xv0iBvWNgraE6xNpwW1AtUWWAGuKKEtel6nk3tc0MUa2hTNCkUS2GMLXNoFpDUeSz+r9+nsYhWkZcsZijqPJaysdj8MYGjaCG+ED7U6uFDTZBtYayEkuemNeADMYIM8RVh1jxp301MqCYbCAR1cSpIipyYlqiSip2azPUDbdXqYtQbUXkYAl4imGWOcSbn9C5CQvfrI8/HCySr1Mxtc1gWkPZdu8BAzIYWM7m6ZlnArDwzSm48TB9xNf4/AmnS40UiPdaLrD1BhL0d5g+4hIkfPNjDtESUEG/n45Tdkk/EQn9dJyyC5qVEj62DYLXh/hJJLEGkZGyOsXQjBYqH4WoJAoGmcN4qpr/8quakU9mMNYTp95OQokMv5PrsmHJJKzllAP5bxYbUfBk6WlzdRZBRVhGvfDNUgTXfsWpk98BvyoiUumZBUeHOM+BXHuXqcTwEHg6ikgXSuYcHOIiyTPoPX66KQZ26J9IF9YeyDtOKVmsAUUstcS7zmaRUoRlVv1eJU13HUzAcmx0VypHKsIyv2tLPdAsDqvB3/mQVoRlHmrecxgRN7WRrdiC+nYC3GXAl74d8T6LfbyJ1A8TkS6c/WTVycqzhGwh20tKKpSp/3tv9No+I0svZWoqAwhIzWJ+lzaAqyrRhuuWgGex8PYuN9gPV6Hi/uChoQYMoeybIEuUELEcLgTWeNCbG7mItVRYcdA/2BLdIxWx4X5eaKUHv3uTlSo3tqmT2emhr4hlc6i5WhpL7lGnYf/glExAbSrsULICgu5DmUY0eT4SrTEPF+6XzaD5UknyjOdQC1Uk4FPbSSExxAOJKFqim/YVJlqoIfaibA+2SyiLr776n0Wpqm+rjZSmbHhfqHJz7dVoNssj5J4vUBHHyaTPkCsAr0oDc5v0CwwrJbbWnc22gPq9iNZKe9uLeIRm1bgX8Vsq854OKOB2aA2zyFzDzX3MIhfvfK0dN1w40sNCJQO6b7VMErJPm/PeA1SUtLnMh7yocmzAsTPY+LAGESVZHCWlYePouVVyWkQCntfmWdd+rLZQpxNJPxFlL44W3StsbpVLZpmAtUNE31+tIuLzsJdCXv9s0T2nMXNt8lkU7cHsm5ZENDWQKy3UfeBXImJuwA2Ob+wmYB5okc5g5WOYO+Qps3iIbEvycbKFeig97SJikXB/gwmozGJbC8BCxMLuEfX22Yo4K/7ACC+i4n3fYAIWs9je4zAXUfVARHvxXmlVxYqIlEzUX3QhEzAXsXz5AnfE5ESEBawko19Iu1S+bxddRY3DTaiYRPiuAm73orQN53tVwF4Kp//hs9hdwG7ACxV8P1S25EJAIokTGgHewtN+QQjeEA4ZA9zI30nFC7pQocywMfbnuhwVmGMigl8ZqgJ1VrOELFQ4t28gT7h3V5QF7EUieXEcXsCefKFS2ZnCPzHjuMmD7FQnv7IoOct13aBoodL5tYKF6r4wUmDAdRjEuK2ZrpfKz7a92ClDukVpeCptNS/UjingA5Pq91a7axKxc467YS96LE7Wi2ghiV9rwPmsodf+rUkrVQozndJY23i6iJHOwLJUhqH9gGs7z29lpDvSrdWZaEX0U8Tqdonm79AtVB/tKRt6DloXsKdEX72L6H6J7tEqDdfNHrR/BsN6rdeg+VO6n0ON5eigmK1RafjYh5MmEZ1U683qSslPH9yGWXRUjlg7tX31qKz1bndWb1kx4Px1Mp5c+xGwshd9tmoutRp2WjGrLFS/bVSVvei4JLgIMvruE1vsEOc1z7l1478Rbr4XPRR1Z38IKUSn30xEL1Xrg1CtjLd70VNZ/ihUw/vxSfdQjkQikUgkEolEIpFIJBKJ/M/5D765gftBFyY5AAAAAElFTkSuQmCC); 
+          background-size: cover;
+          height: 80px;
+          width: 80px;
+          position: absolute;
+          left: 47%;
+          top: 50%;
+        }
+
+        #PlayerObject {
+          position: absolute; 
+          top: 170%;
+          height: 150px;
+          width: 150px;
+          border-radius: 50%;
+          z-index: 2;
+        }
+
+        #ComputerObject {
+          position: absolute;
+          top: 170%; 
+          height: 150px;
+          width: 150px;
+          border-radius: 50%;
+          z-index: 2;
+        }
+
+      /* */
+
+      /* The CSS for the sentences that displays who won the match and rounds*/
+
+        .convo {
+          justify-content: center;
+          font-family: 'Times New Roman', Times, serif;
+          display: flex;
+          width: 70%;
+          font-size: 50px;
+          position: absolute;
+          top: 10%; 
+        }
+
+      /* */
+
+      /* The CSS for the buttons for Rock, Paper, Scissors, and reload*/
+
+        .ReloadButton {
+          width: 110px;
+          height: 30px;
+          position: absolute;
+          top: -15%;
+          border-radius: unset;
+          border: 1px solid black;
+          background-color: #00203F;
+          color: honeydew; 
+          border-radius: 10%;
+        }
+
+        span {
+          position: relative;
+          top: 60%; 
+        }
+
+        .Rock {
+          background-image: url(https://adiihd.github.io/rock-paper-scissors-game/img/rock.png);
+          background-size: cover;
+        }
+        .Paper{
+          background-image: url(https://adiihd.github.io/rock-paper-scissors-game/img/paper.png);
+          background-size: cover;
+        }
+        .Scissors{
+          background-image: url(https://adiihd.github.io/rock-paper-scissors-game/img/scissors.png);
+          background-size: cover;
+        }
+
+        #hover:hover {
+          transform: scale(1.1, 1.1); 
+        }
+
+        Button {
+          margin-right: 100px; 
+          margin-left: 100px; 
+          border-radius: 50%;
+          border-style: hidden;
+          height: 29.3%;
+          width: 28.7%;
+          position: relative;
+          top: 27%;
+        }
+
+      /* */
+
+      /* The CSS for the scores of the computer and player*/
+
+        .scores {
+          position: absolute; 
+        }
+
+        .playerScore {
+          position: absolute;
+          top: 0%;
+          left: 0%;
+          border: 3px black;
+          border-style: hidden solid solid hidden;
+          font-family: 'Times New Roman', Times, serif;
+          color: honeydew;
+          background-color: black;
+          font-size: 40px;
+          padding: 0px 10px 60px 10px;
+          width: 275px;
+          display: flex;
+          justify-content: center;
+        }
+
+        .computerScore {
+          position: absolute;
+          top: 0%;
+          right: 30.6%;
+          border: 3px black;
+          border-style: hidden hidden solid solid;
+          font-family: 'Times New Roman', Times, serif;
+          color: honeydew; 
+          background-color: black;
+          font-size: 40px;
+          padding: 0px 10px 60px 10px; 
+          width: 275px;
+          display: flex;
+          justify-content: center;
+        }
+
+      /* */
+
+      /* The CSS for the directions and rules on the right of the container*/  
+
+      #log {
+          font-family: 'Times New Roman', Times, serif;
+          line-height: 50px; 
+          border: 3px #00203F;
+          border-style: hidden hidden hidden solid;  
+          height: 100%; 
+          width: 30%;
+          position: absolute;
+          right: 0%; 
+          top: 0%; 
+          display: flex;
+          justify-content: flex-start;
+          font-size: 18px;
+          flex-direction: column;
+          padding-left: 10px; 
+          background-color: #00203F;
+          color: honeydew;
+        }
+
+      /* */
+      </style>
+    </head>
+    <body>
+      <div class="playerScore">Player Score:</div>
+      <div class="computerScore">Computer Score:</div>
+      <div class="convo"></div>
+      <div class="container">
+        <button class="Rock" id="hover">
+          <span>Rock</span>
+        </button>
+        <button class="Paper" id="hover">
+          <span>Paper</span>
+        </button>
+        <button class="Scissors" id="hover">
+          <span>Scissors</span>
+        </button>
+      </div>
+      <div class="Selection">
+        <div class="PlayerSelection">PlayerSelection
+          <div id="PlayerObject"></div>
+        </div>
+        <div class="BattleAgainstIcon"></div>
+        <div class="ComputerSelecion">Computer Selection 
+          <div id="ComputerObject"></div>
+        </div>
+      </div>
+      <div id="log">
+        <h1>How to play Rock, Paper, or Scissors?</h1>
+        <p>Rock, paper, scissors is a simple hand game where the player that plays the strongest “object” is the winner of the game. In the game, 
+          rock beats scissors, scissors beats paper, and paper beats rock. It's that easy! Rock, Paper, Scissors is a simple game that anybody can play and win. 
+          There is no intrinsic advantage to the stronger, older, or more experienced opponent.</p>
+        <h2>Directions: </h2>
+        <p>In this mini-game, you will be playing against a computer, and when you click the icon, you'll use that object to duel against the computer. First to 
+          five points wins the game. At the end of this match, you can try again by clicking the "Another Match" button or, if it's enough for today, you can leave. 
+          I hope you have fun!
+        </p>
+      </div>
+      <script>
+        //The function adds an event listener to each of the buttons that starts the round 
+        //Also it takes in for later use on what object the player clicked on and is going to use
+        const btn = document.querySelectorAll('#hover');
+        btn.forEach((button) => {
+          button.addEventListener('click', () => {
+            x = button.className;
+            playRound(x, computerPlay()); 
+          }) 
+        });
+        
+        //The function below shows what the computer will use in the Rock, Paper, Scissors match 
+        function computerPlay() {
+          let option = Math.floor(Math.random() * 2.5 + 1);
+          if(option == 1) {
+            return "Rock";
+          } else if(option == 2) {
+            return "Paper";
+          } else {
+            return "Scissors";
+          };
+        }
+
+        //These variables is the main support of every single line of Javascript code for this project
+        //The variables tells the computer when to turn off all interactivity from Javascript 
+        let limit = 0; 
+        let winCondition = 0;
+        let winCondition1 = 0;
+
+        //The lines below displays the winner of each round and the points that the users have
+        
+        //variables for the display of who won
+        let logContainer = document.querySelector('.convo');
+        let content = document.createElement('p');
+        //
+
+        //Variables used to display the points that the player has starting from 0
+        let playerScore = 0;
+        let playerSelection;
+        let playerContainer = document.querySelector('.playerScore');
+        let playerPt = document.createElement('p');
+        playerPt.classList.add('scores');
+        playerPt.textContent = 0;
+        playerContainer.appendChild(playerPt);
+        //
+
+        //Variables used to display the points that the computer has starting from 0
+        let computerScore = 0;
+        let computerSelection;
+        let computerContainer = document.querySelector('.computerScore'); 
+        let computerPt = document.createElement('p');
+        computerPt.classList.add('scores'); 
+        computerPt.textContent = 0;
+        computerContainer.appendChild(computerPt);
+        //
+
+        function playRound(playerSelection, computerSelection) {
+          //Displays the objects picked by the player and the computer
+          document.getElementById('PlayerObject').className = '';
+          document.getElementById('ComputerObject').className = '';
+          //
+
+          //If the player picked 'Rock'
+          if(playerSelection == "Rock" && computerSelection == "Scissors" && limit === 0) {
+            content.textContent = "You win, Rock beats Scissors!";
+            logContainer.appendChild(content); 
+            document.getElementById('PlayerObject').classList.add('Rock'); 
+            document.getElementById('ComputerObject').classList.add('Scissors'); 
+      
+            playerScore++; 
+            playerPt.textContent = playerScore;
+            playerContainer.appendChild(playerPt);
+
+          } else if(playerSelection == "Rock" && computerSelection == "Paper" && limit === 0) {
+              content.textContent = "You lose, Paper beats Rock";
+              logContainer.appendChild(content);
+              document.getElementById('PlayerObject').classList.add('Rock'); 
+              document.getElementById('ComputerObject').classList.add('Paper'); 
+
+              computerScore++;
+              computerPt.textContent = computerScore;
+              computerContainer.appendChild(computerPt);
+
+          } else if(playerSelection == "Rock" && computerSelection == "Rock" && limit === 0) {
+              content.textContent = "It's a draw, you both picked Rock";
+              logContainer.appendChild(content);
+              document.getElementById('PlayerObject').classList.add('Rock'); 
+              document.getElementById('ComputerObject').classList.add('Rock'); 
+          }
+
+          //If the player picked 'Paper'
+          if(playerSelection == "Paper" && computerSelection == "Rock" && limit === 0) {
+            content.textContent = "You win, Paper beats Rock!";
+            logContainer.appendChild(content);
+            document.getElementById('PlayerObject').classList.add('Paper'); 
+            document.getElementById('ComputerObject').classList.add('Rock'); 
+
+            playerScore++; 
+            playerPt.textContent = playerScore;
+            playerContainer.appendChild(playerPt);
+
+          } else if(playerSelection == "Paper" && computerSelection == "Scissors" && limit === 0) {
+              content.textContent = "You lose, Scissors beats Paper";
+              logContainer.appendChild(content);
+              document.getElementById('PlayerObject').classList.add('Paper'); 
+              document.getElementById('ComputerObject').classList.add('Scissors'); 
+
+              computerScore++; 
+              computerPt.textContent = computerScore;
+              computerContainer.appendChild(computerPt);
+
+          } else if(playerSelection == "Paper" && computerSelection == "Paper" && limit === 0) {
+              content.textContent = "It's a draw, you both picked Paper";
+              logContainer.appendChild(content);
+              document.getElementById('PlayerObject').classList.add('Paper'); 
+              document.getElementById('ComputerObject').classList.add('Paper'); 
+
+          //If the player picked 'Scissors'
+          }if(playerSelection == "Scissors" && computerSelection == "Paper" && limit === 0) {
+            content.textContent = "You win, Scissors beats Paper!";
+            logContainer.appendChild(content);
+            document.getElementById('PlayerObject').classList.add('Scissors'); 
+            document.getElementById('ComputerObject').classList.add('Paper'); 
+
+            playerScore++; 
+            playerPt.textContent = playerScore;
+            playerContainer.appendChild(playerPt);
+
+          } else if(playerSelection == "Scissors" && computerSelection == "Rock" && limit === 0) {
+              content.textContent = "You lose, Rock beats Scissors";
+              logContainer.appendChild(content);
+              document.getElementById('PlayerObject').classList.add('Scissors'); 
+              document.getElementById('ComputerObject').classList.add('Rock'); 
+              
+              computerScore++;
+              computerPt.textContent = computerScore;
+              computerContainer.appendChild(computerPt);
+    
+          } else if(playerSelection == "Scissors" && computerSelection == "Scissors" && limit === 0) {
+              content.textContent = "It's a draw, you both picked Scissors";
+              logContainer.appendChild(content);
+              document.getElementById('PlayerObject').classList.add('Scissors'); 
+              document.getElementById('ComputerObject').classList.add('Scissors'); 
+          }
+          
+          //The lines below activates when someone wins the game 
+          //Also disabling all interactivity and showing the retry game button
+
+          //Variables for the button to reload the page
+            let buttonToReloadPage = document.createElement('button');
+            buttonToReloadPage.classList.add('ReloadButton'); 
+            buttonToReloadPage.textContent = "Another Match"
+            buttonToReloadPage.addEventListener('click', () => {
+              location.reload(); 
+            })
+          //
+
+          if(playerScore >= 5 && winCondition1 === 0) {
+            content.textContent = "Congratulations, you beated the computer!";
+            logContainer.appendChild(content);
+            logContainer.appendChild(buttonToReloadPage);
+            winCondition++;
+            limit++; 
+
+            //Removes the animation for the buttons
+            document.getElementById('hover').id = ''; 
+            document.getElementById('hover').id = ''; 
+            document.getElementById('hover').id = ''; 
+          } else if(computerScore >= 5 && winCondition === 0) {
+            content.textContent = "The computer beated you, try again?";
+            logContainer.appendChild(content); 
+            logContainer.appendChild(buttonToReloadPage);
+            winCondition1++; 
+            limit++; 
+
+            //Removes the animation for the buttons
+            document.getElementById('hover').id = ''; 
+            document.getElementById('hover').id = ''; 
+            document.getElementById('hover').id = ''; 
+          }
+        } 
+      </script>
+    </body>
+  </html>
